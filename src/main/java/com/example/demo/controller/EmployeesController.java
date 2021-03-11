@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,18 +27,23 @@ public class EmployeesController {
 	@Autowired
 	EmployeeRepository employeeRepository;
 	
-	List<Employee> emplList = new ArrayList<>(Arrays.asList(
-			new Employee("Javed", "Surat"),
-			new Employee("Kamal", "Dallas"),
-			new Employee("Minesh", "Irving")));
+	private static final Logger logger = LoggerFactory.getLogger(EmployeesController.class);
 	
-	@ResponseBody
+//	List<Employee> emplList = new ArrayList<>(Arrays.asList(
+//			new Employee("Javed", "Surat"),
+//			new Employee("Kamal", "Dallas"),
+//			new Employee("Minesh", "Irving")));
+	
+	
 	@GetMapping(value = "/all")
 	public List<Employee> getAllEmployees() {
-		return employeeRepository.findAll();
+		
+		List<Employee> list = employeeRepository.findAll();
+		logger.info("EmployeesController getAllEmployees() finds {} ", list);
+		
+		return list;
 	}
-	
-	@ResponseBody
+
 	@GetMapping(value = "/{name}")
 	public Employee getByName(@PathVariable String name) {
 		return employeeRepository.findByName(name);
@@ -45,7 +52,10 @@ public class EmployeesController {
 	@PostMapping(value = "/load")
 	public void createEmployee(@RequestBody final Employee employee) {
 		//emplList.stream().forEach(empl -> employeeRepository.save(empl));
+		
+		logger.info("EmployeesController createEmployee() creating a {} ", employee);
 		employeeRepository.save(employee);
+		
 	}
 	
 	@PutMapping(value = "/{name}")
