@@ -37,11 +37,7 @@ public class EmployeesController {
 	
 	@GetMapping(value = "/all")
 	public List<Employee> getAllEmployees() {
-		
-		List<Employee> list = employeeRepository.findAll();
-		logger.info("EmployeesController getAllEmployees() finds {} ", list);
-		
-		return list;
+		return employeeRepository.findAll();
 	}
 
 	@GetMapping(value = "/{name}")
@@ -52,8 +48,6 @@ public class EmployeesController {
 	@PostMapping(value = "/load")
 	public void createEmployee(@RequestBody final Employee employee) {
 		//emplList.stream().forEach(empl -> employeeRepository.save(empl));
-		
-		logger.info("EmployeesController createEmployee() creating a {} ", employee);
 		employeeRepository.save(employee);
 		
 	}
