@@ -6,12 +6,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Aspect
-@Component
+@Configuration
 public class AspectConfig {
 		
 	private static final Logger log = LoggerFactory.getLogger(AspectConfig.class);
@@ -21,11 +21,16 @@ public class AspectConfig {
 	 * 	  (..) for any number of argument
 	 */
 	@Pointcut(value = "execution(* com.example.demo.controller.*.*(..))")
-	public void myPointcutAdvice() {
+	public void myPointcutAdviceForPackage() {
 		
 	}
 	
-	@Around("myPointcutAdvice()")
+	@Pointcut(value = "within(@org.springframework.web.bind.annotation.RestController *)")
+	public void myPointcutAdviceForBean() {
+		
+	}
+	
+	@Around("myPointcutAdviceForPackage() && myPointcutAdviceForBean()")
 	public Object applicationLogger(ProceedingJoinPoint joinpoint) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		
