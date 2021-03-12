@@ -58,7 +58,7 @@ public class EmployeesController {
 	
 	@PutMapping(value = "/{name}")
 	public void updateEmployee(@PathVariable String name, @RequestBody Employee employee) {
-		Employee editEmp = employeeRepository.findByName(name);
+		Employee editEmp = getByName(name);
 		editEmp.setName(employee.getName());
 		editEmp.setLocation(employee.getLocation());
 		employeeRepository.save(editEmp);
@@ -66,6 +66,6 @@ public class EmployeesController {
 	
 	@DeleteMapping(value = "/{name}")
 	public void deleteEmployee(@PathVariable String name) {
-		employeeRepository.delete(employeeRepository.findByName(name));
+		employeeRepository.delete(getByName(name));
 	}
 }
