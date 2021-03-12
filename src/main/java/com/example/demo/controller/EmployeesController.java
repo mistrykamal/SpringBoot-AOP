@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.exception.DataNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
 
@@ -42,7 +43,11 @@ public class EmployeesController {
 
 	@GetMapping(value = "/{name}")
 	public Employee getByName(@PathVariable String name) {
-		return employeeRepository.findByName(name);
+		Employee employee = employeeRepository.findByName(name);
+		if(employee == null) {
+			throw new DataNotFoundException("Employee "+ name + " not exist in repository");
+		}
+		return employee;
 	}
 	
 	@PostMapping(value = "/load")
