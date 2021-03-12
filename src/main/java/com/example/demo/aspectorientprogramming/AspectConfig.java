@@ -1,6 +1,8 @@
 package com.example.demo.aspectorientprogramming;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -31,7 +33,7 @@ public class AspectConfig {
 	}
 	
 	@Around("myPointcutAdviceForPackage() && myPointcutAdviceForBean()")
-	public Object applicationLogger(ProceedingJoinPoint joinpoint) throws Throwable {
+	public Object applicationLoggerAdvice(ProceedingJoinPoint joinpoint) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		String methodName = joinpoint.getSignature().getName();
@@ -46,6 +48,22 @@ public class AspectConfig {
 		
 		return object;
 		
+	}
+	
+	@Pointcut("within(com.example.demo.*.*)")
+	public void myPointcutExceptionPackage() {
+		
+	}
+	
+	@AfterThrowing(pointcut = "myPointcutExceptionPackage()", throwing = "exception")
+	public void exceptionLoggerAdvice(JoinPoint joinpoint, Throwable exception) {
+		
+		log.error("Exception thrown in {}.{}  with cause = {},  with message = {} ", 
+					joinpoint.getSignature().getDeclaringTypeName(), 
+					joinpoint.getSignature().getName(), 
+					exception.getCause() != null ? exception.getCause() : "NULL", 
+					exception.getMessage() != null ? exception.getMessage() : "NULL"
+					);
 	}
 	
 }

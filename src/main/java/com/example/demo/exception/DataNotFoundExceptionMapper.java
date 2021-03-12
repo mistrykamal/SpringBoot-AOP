@@ -28,7 +28,7 @@ public class DataNotFoundExceptionMapper {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> handleGlobalException(Exception exception, WebRequest request) {
 		
-		ErrorMessage message = new ErrorMessage(exception.getMessage(), 404, request.getDescription(false));
+		ErrorMessage message = new ErrorMessage(exception.getMessage(), 500, request.getDescription(false));
 		return new ResponseEntity(message, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

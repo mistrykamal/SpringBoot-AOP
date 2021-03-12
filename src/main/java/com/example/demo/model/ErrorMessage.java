@@ -1,8 +1,5 @@
 package com.example.demo.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement  // to convert error in json format
 public class ErrorMessage {
 	
 	private String errorMessage;
