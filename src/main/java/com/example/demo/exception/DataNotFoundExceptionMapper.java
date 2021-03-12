@@ -16,19 +16,19 @@ public class DataNotFoundExceptionMapper {
 	 * 
 	 */
 	@ExceptionHandler(DataNotFoundException.class)
-	public ResponseEntity<?> handleDataNotFoundException(DataNotFoundException exception, WebRequest request) {
+	public ResponseEntity<Object> handleDataNotFoundException(DataNotFoundException exception, WebRequest request) {
 		
 		ErrorMessage message = new ErrorMessage(exception.getMessage(), 404, request.getDescription(false));
-		return new ResponseEntity(message, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
 	}
 	/**
 	 * 	Handling exception globally
 	 *  
 	 */
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<?> handleGlobalException(Exception exception, WebRequest request) {
+	public ResponseEntity<Object> handleGlobalException(Exception exception, WebRequest request) {
 		
 		ErrorMessage message = new ErrorMessage(exception.getMessage(), 500, request.getDescription(false));
-		return new ResponseEntity(message, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
